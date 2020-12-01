@@ -43,4 +43,8 @@ HEADERS += \
     Queue.h \
     StaticQueue.h \
     DTString.h \
-    Sort.h
+    Sort.h \
+    TreeNode.h \
+    Tree.h \
+    GTreeNode.h \
+    GTree.h

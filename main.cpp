@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdlib>
-#include "Sort.h"
+#include "GTree.h"
+#include "GTreeNode.h"
 
 using namespace std;
 using namespace DTLib;
@@ -8,13 +9,67 @@ using namespace DTLib;
 
 int main()
 {
-    int array[] = {2, 1, 4, 3, 6, 4};
+    GTree<int> test;
+    GTreeNode<int> test2;
+    test2.parent = NULL;
+    test2.value = 0;
+    test.insert(&test2);
 
-    Sort::Insert(array, 6);
+    GTreeNode<int>* root = test.find(0);
+    test.insert(1, root);
+    test.insert(5, root);
+    test.insert(9, root);
 
-    for(int i=0; i<6; i++)
+    root = test.find(1);
+    test.insert(2, root);
+    //test.insert(3, root);
+    test.insert(4, root);
+
+    root = test.find(5);
+    test.insert(6, root);
+    root = test.find(6);
+    test.insert(7, root);
+    root = test.find(7);
+    test.insert(8, root);
+
+    root = test.find(9);
+    test.insert(10, root);
+    //test.insert(11, root);
+    test.insert(12, root);
+
+    cout << "count1: " << test.count() << endl;
+    cout << "height1: " << test.height() << endl;
+    cout << "degree1: " << test.degree() << endl;
+
+    SharedPointer<Tree<int>> a = test.remove(5);
+
+    root = dynamic_cast<GTreeNode<int>*>(a->find(8));
+
+    while (root != NULL)
     {
-        cout << array[i] << endl;
+        cout << root->value << " ";
+
+        root = dynamic_cast<GTreeNode<int>*>(root->parent);
+    }
+
+    cout << endl;
+
+    cout << "count2: " << test.count() << endl;
+    cout << "height2: " << test.height() << endl;
+    cout << "degree2: " << test.degree() << endl;
+
+    for(int i=0; i<3; i++)
+    {
+        root = test.find(i*4 + 4);
+
+        while (root != NULL)
+        {
+            cout << root->value << " ";
+
+            root = dynamic_cast<GTreeNode<int>*>(root->parent);
+        }
+
+        cout << endl;
     }
 
     return 0;
