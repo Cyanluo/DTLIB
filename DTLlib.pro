@@ -21,11 +21,32 @@ SOURCES += main.cpp \
     DTString.cpp
 
 HEADERS += \
+    Array.h \
+    CircleList.h \
+    DualCircleLinkList.h \
+    DualLinklist.h \
+    DynamicArray.h \
+    DynamicList.h \
+    GTree.h \
+    GTreeNode.h \
+    LinkList.h \
+    LinkQueue.h \
+    LinkStack.h \
+    LinuxList.h \
+    List.h \
+    Pointer.h \
+    Queue.h \
+    SeqList.h \
+    SharedPointer.h \
     SmartPointer.h \
     Exception.h \
     Object.h \
     List.h \
     SeqList.h \
+    Sort.h \
+    Stack.h \
+    StaticArray.h \
+    StaticLinkList.h \
     StaticList.h \
     DynamicList.h \
     Array.h \
@@ -38,13 +59,20 @@ HEADERS += \
     CircleList.h \
     DualLinkList.h \
     Stack.h \
+    StaticQueue.h \
+    StaticStack.h \
     StaticStack.h \
     LinkStack.h \
     Queue.h \
     StaticQueue.h \
     DTString.h \
     Sort.h \
+    Tree.h \
+    TreeNode.h \
     TreeNode.h \
     Tree.h \
     GTreeNode.h \
     GTree.h
+
+DISTFILES += \
+    DTLlib.pro.user

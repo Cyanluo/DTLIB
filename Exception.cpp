@@ -15,7 +15,7 @@ void Exception::init(const char* message, const char* file, int line)
     {
         char ret[16] = {0};
 
-        itoa(line, ret, 10);
+        //itoa(line, ret, 10);
 
         m_location = (char *)malloc(strlen(file) + strlen(ret) + 2);
 

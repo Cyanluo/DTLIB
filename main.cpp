@@ -2,6 +2,8 @@
 #include <cstdlib>
 #include "GTree.h"
 #include "GTreeNode.h"
+#include "DualCircleLinkList.h"
+#include "LinkQueue.h"
 
 using namespace std;
 using namespace DTLib;
@@ -9,6 +11,23 @@ using namespace DTLib;
 
 int main()
 {
+    LinkQueue<int> l;
+
+    for(int i=0; i<5; i++)
+    {
+        l.add(i);
+    }
+
+    for(int i=0; i<5; i++)
+    {
+        cout << l.front() << endl;
+        l.remove();
+    }
+
+    return 0;
+}
+
+/* tree
     GTree<int> test;
     GTreeNode<int> test2;
     test2.parent = NULL;
@@ -73,4 +92,33 @@ int main()
     }
 
     return 0;
-}
+
+*/
+
+
+/* DualCircleLinkList
+ * DualCircleLinkList<int> l;
+
+    int j=0;
+
+    for(int i=0; i<=5; i++)
+    {
+        l.insert(i);
+    }
+
+//    for(l.move(0); !l.end(); l.next())
+//    {
+//        cout << l.current() << endl;
+//        j++;
+//        if(j>10)
+//        {
+//            break;
+//        }
+//    }
+
+    for(int i=0; i<=5; i++)
+    {
+        cout << l.get(i) << endl;
+    }
+ */
+

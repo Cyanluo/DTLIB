@@ -1,39 +1,43 @@
-#ifndef STATICQUEUE_H
-#define STATICQUEUE_H
+#ifndef LINKQUEUE_H
+#define LINKQUEUE_H
 
-#include "Queue.h"
+#include "LinuxList.h"
 #include "Exception.h"
+#include "Queue.h"
 
 namespace DTLib
 {
 
-template < typename T, int N >
-class StaticQueue:public Queue<T>
+template < typename T >
+class LinkQueue: public Queue<T>
 {
 protected:
-    T m_space[N];
-    int m_front;
-    int m_rear;
+    struct Node: public Object
+    {
+        list_head head;
+        T value;
+    };
+
+    list_head m_head;
+
     int m_length;
 public:
-    StaticQueue()
+    LinkQueue()
     {
-        m_front = 0;
-        m_rear = 0;
         m_length = 0;
-    }
-
-    int capacity() const
-    {
-        return N;
+        INIT_LIST_HEAD(&m_head);
     }
 
     void add(const T& e)
     {
-        if(m_length < N)
+        Node* node = new Node;
+
+        if(NULL != node)
         {
-            m_space[m_rear] = e;
-            m_rear = (m_rear + 1) % N;
+            node->value = e;
+
+            list_add_tail(&(node->head), &m_head);
+
             m_length++;
         }
         else
@@ -46,8 +50,13 @@ public:
     {
         if(m_length > 0)
         {
-            m_front = (m_front + 1) % N;
+            list_head* toDel = m_head.next;
+
+            list_del(toDel);
+
             m_length--;
+
+            delete list_entry(toDel, Node, head);
         }
         else
         {
@@ -59,7 +68,7 @@ public:
     {
         if(m_length > 0)
         {
-            return m_space[m_front];
+            return list_entry(m_head.next, Node, head)->value;
         }
         else
         {
@@ -69,17 +78,23 @@ public:
 
     void clear()
     {
-        m_front = 0;
-        m_rear = 0;
-        m_length = 0;
+        while(m_length > 0)
+        {
+            remove();
+        }
     }
 
     int length() const
     {
         return m_length;
     }
+
+    ~LinkQueue()
+    {
+        clear();
+    }
 };
 
 }
 
-#endif // STATICQUEUE_H
+#endif // LINKQUEUE_H
