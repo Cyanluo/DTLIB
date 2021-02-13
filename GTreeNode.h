@@ -10,20 +10,8 @@ namespace DTLib
 template <typename T>
 class GTreeNode:public TreeNode<T>
 {
-protected:
-    bool m_flag;
-
-    void* operator new(unsigned long size) throw()
-    {
-        return Object::operator new(size);
-    }
 public:
     LinkList<GTreeNode<T>*> child;
-
-    GTreeNode()
-    {
-        m_flag = false;
-    }
 
     static GTreeNode<T>* NewNode()
     {
@@ -35,11 +23,6 @@ public:
         }
 
         return ret;
-    }
-
-    bool flag()
-    {
-        return m_flag;
     }
 };
 

@@ -4,6 +4,7 @@
 #include "Tree.h"
 #include "GTreeNode.h"
 #include "Exception.h"
+#include "LinkQueue.h"
 
 #include <iostream>
 
@@ -14,6 +15,8 @@ template <typename T>
 class GTree: public Tree<T>
 {
 protected:
+    LinkQueue<GTreeNode<T>*> m_queue;
+
     GTreeNode<T>* find(GTreeNode<T>* node, const T& value) const
     {
         GTreeNode<T>* ret = NULL;
@@ -226,6 +229,8 @@ public:
         else
         {
             remove(node, ret);
+
+            m_queue.clear();
         }
 
         return ret;
@@ -244,6 +249,8 @@ public:
         else
         {
             remove(dynamic_cast<GTreeNode<T>*>(node), ret);
+
+            m_queue.clear();
         }
 
         return ret;
@@ -284,6 +291,57 @@ public:
         free(root());
 
         this->m_root = NULL;
+
+        m_queue.clear();
+    }
+
+    bool begin()
+    {
+        bool ret = (this->m_root != NULL);
+
+        if(ret)
+        {
+            m_queue.clear();
+            m_queue.add(dynamic_cast<GTreeNode<T>*>(this->m_root));
+        }
+
+        return ret;
+    }
+
+    bool end()
+    {
+        return (m_queue.length() == 0) || (this->m_root == NULL);
+    }
+
+    bool next()
+    {
+        bool ret = !end();
+
+        if(ret)
+        {
+            GTreeNode<T>* node = m_queue.front();
+
+            m_queue.remove();
+
+            for(node->child.move(0); !(node->child.end()); node->child.next())
+            {
+                m_queue.add(node->child.current());
+            }
+        }
+
+        return ret;
+    }
+
+    T current()
+    {
+        if(!end())
+        {
+            return m_queue.front()->value;
+        }
+        else
+        {
+            THROW_EXCEPTION(InvalidOperationException, "no element in current positon...");
+        }
     }
 
     ~GTree()

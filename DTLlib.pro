@@ -22,6 +22,8 @@ SOURCES += main.cpp \
 
 HEADERS += \
     Array.h \
+    BTree.h \
+    BTreeNode.h \
     CircleList.h \
     DualCircleLinkList.h \
     DualLinklist.h \

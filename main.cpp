@@ -4,31 +4,126 @@
 #include "GTreeNode.h"
 #include "DualCircleLinkList.h"
 #include "LinkQueue.h"
+#include "BTree.h"
+#include "BTreeNode.h"
+#include "DynamicArray.h"
 
 using namespace std;
 using namespace DTLib;
 
-
 int main()
 {
-    LinkQueue<int> l;
+    BTree<int> tree;
 
-    for(int i=0; i<5; i++)
+    tree.insert(0, NULL);
+
+    TreeNode<int>* temp = tree.find(0);
+    tree.insert(1, temp);
+    tree.insert(2, temp);
+
+    temp = tree.find(1);
+    tree.insert(3, temp);
+    tree.insert(4, temp);
+
+    temp = tree.find(2);
+    tree.insert(5, temp);
+    tree.insert(6, temp);
+
+    temp = tree.find(6);
+    tree.insert(7, temp);
+    tree.insert(8, temp);
+
+    cout << "count:" << tree.count() << endl;
+    cout << "height:" << tree.height() << endl;
+    cout << "degree:" << tree.degree() << endl;
+
+    temp = tree.find(6);
+    //tree.remove(temp);
+
+    cout << "count:" << tree.count() << endl;
+    cout << "height:" << tree.height() << endl;
+    cout << "degree:" << tree.degree() << endl;
+
+    int index[] = {3, 4, 5, 7, 8};
+
+    for(int i=0; i<sizeof(index)/4; i++)
     {
-        l.add(i);
+        temp = tree.find(index[i]);
+
+        while(temp)
+        {
+            cout << temp->value;
+
+            temp = dynamic_cast<BTreeNode<int>*>(temp->parent);
+        }
+        cout  << endl;
     }
 
-    for(int i=0; i<5; i++)
+    cout << endl;
+
+    for(tree.begin(); !tree.end(); tree.next())
     {
-        cout << l.front() << endl;
-        l.remove();
+        cout << tree.current() << endl;
     }
+
+    SharedPointer< Array<int> > array = tree.traversal(LevelOrder);
+    cout << endl;
+
+    for(int i=0; i<array->length(); i++)
+    {
+        cout << (*array)[i] << " ";
+    }
+
+    cout << endl;
+
+    SharedPointer< BTree<int> > tclone = tree.clone();
+    temp = tree.find(8);
+    tree.insert(12, temp);
+
+    for(int i=0; i<sizeof(index)/4; i++)
+    {
+        temp = tclone->find(index[i]);
+
+        while(temp)
+        {
+            cout << temp->value;
+
+            temp = dynamic_cast<BTreeNode<int>*>(temp->parent);
+        }
+        cout  << endl;
+    }
+
+    cout << endl;
+
+    cout << "tclone == tree:" << (tree == *tclone) << endl;
+
+    SharedPointer<BTree<int>> add_tree = tree.add(*tclone);
+
+    for(add_tree->begin(); !add_tree->end(); add_tree->next())
+    {
+        cout << add_tree->current() << endl;
+    }
+
+    BTreeNode<int>* head = tree.thread(LevelOrder);
+
+    while (head->right != NULL)
+    {
+        head = head->right;
+    }
+
+    while (head != NULL)
+    {
+        cout << head->value << " ";
+        head = head->left;
+    }
+
+    cout << endl;
 
     return 0;
 }
 
-/* tree
-    GTree<int> test;
+/* GTree
+ * GTree<int> test;
     GTreeNode<int> test2;
     test2.parent = NULL;
     test2.value = 0;
@@ -36,31 +131,30 @@ int main()
 
     GTreeNode<int>* root = test.find(0);
     test.insert(1, root);
-    test.insert(5, root);
-    test.insert(9, root);
+    test.insert(2, root);
+    test.insert(3, root);
 
     root = test.find(1);
-    test.insert(2, root);
-    //test.insert(3, root);
     test.insert(4, root);
-
-    root = test.find(5);
+    test.insert(5, root);
     test.insert(6, root);
-    root = test.find(6);
-    test.insert(7, root);
-    root = test.find(7);
-    test.insert(8, root);
 
-    root = test.find(9);
+    root = test.find(2);
+    test.insert(7, root);
+    test.insert(8, root);
+    test.insert(9, root);
+
+    root = test.find(3);
     test.insert(10, root);
-    //test.insert(11, root);
+    test.insert(11, root);
     test.insert(12, root);
+    test.insert(13, root);
 
     cout << "count1: " << test.count() << endl;
     cout << "height1: " << test.height() << endl;
     cout << "degree1: " << test.degree() << endl;
 
-    SharedPointer<Tree<int>> a = test.remove(5);
+    SharedPointer<Tree<int>> a = test.remove(2);
 
     root = dynamic_cast<GTreeNode<int>*>(a->find(8));
 
@@ -77,24 +171,11 @@ int main()
     cout << "height2: " << test.height() << endl;
     cout << "degree2: " << test.degree() << endl;
 
-    for(int i=0; i<3; i++)
+    for(test.begin(); !test.end(); test.next())
     {
-        root = test.find(i*4 + 4);
-
-        while (root != NULL)
-        {
-            cout << root->value << " ";
-
-            root = dynamic_cast<GTreeNode<int>*>(root->parent);
-        }
-
-        cout << endl;
+        cout << test.current() << endl;
     }
-
-    return 0;
-
-*/
-
+ */
 
 /* DualCircleLinkList
  * DualCircleLinkList<int> l;
@@ -119,6 +200,21 @@ int main()
     for(int i=0; i<=5; i++)
     {
         cout << l.get(i) << endl;
+    }
+ */
+
+/*LinkQueue
+ * LinkQueue<int> l;
+
+    for(int i=0; i<5; i++)
+    {
+        l.add(i);
+    }
+
+    for(int i=0; i<5; i++)
+    {
+        cout << l.front() << endl;
+        l.remove();
     }
  */
 
