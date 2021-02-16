@@ -7,117 +7,51 @@
 #include "BTree.h"
 #include "BTreeNode.h"
 #include "DynamicArray.h"
+#include "MatrixGraph.h"
 
 using namespace std;
 using namespace DTLib;
 
 int main()
 {
-    BTree<int> tree;
+    MatrixGraph<3, int, int> graph;
 
-    tree.insert(0, NULL);
+    graph.setEdge(0, 1, 1);
+    graph.setEdge(1, 0, 2);
+    graph.setEdge(1, 2, 3);
 
-    TreeNode<int>* temp = tree.find(0);
-    tree.insert(1, temp);
-    tree.insert(2, temp);
+    cout << "ID(1):" << graph.ID(1) << endl;
+    cout << "OD(1):" << graph.OD(1) << endl;
+    cout << "TD(1):" << graph.TD(1) << endl;
+    cout << "vCount:" << graph.vCount() << endl;
+    cout << "eCount:" << graph.eCount() << endl;
 
-    temp = tree.find(1);
-    tree.insert(3, temp);
-    tree.insert(4, temp);
+    cout << "edget(1,2):" << graph.getEdge(1, 2) << endl;
 
-    temp = tree.find(2);
-    tree.insert(5, temp);
-    tree.insert(6, temp);
+    graph.setEdge(0, 1, 30000);
 
-    temp = tree.find(6);
-    tree.insert(7, temp);
-    tree.insert(8, temp);
+    cout << "edget(0,1):" << graph.getEdge(0, 1) << endl;
 
-    cout << "count:" << tree.count() << endl;
-    cout << "height:" << tree.height() << endl;
-    cout << "degree:" << tree.degree() << endl;
+    graph.removeEdge(0, 1);
 
-    temp = tree.find(6);
-    //tree.remove(temp);
+    cout << "ID(1):" << graph.ID(1) << endl;
+    cout << "OD(1):" << graph.OD(1) << endl;
+    cout << "TD(1):" << graph.TD(1) << endl;
+    cout << "vCount:" << graph.vCount() << endl;
+    cout << "eCount:" << graph.eCount() << endl;
 
-    cout << "count:" << tree.count() << endl;
-    cout << "height:" << tree.height() << endl;
-    cout << "degree:" << tree.degree() << endl;
+    SharedPointer< Array<int> > ad = graph.getAdjacent(1);
 
-    int index[] = {3, 4, 5, 7, 8};
-
-    for(int i=0; i<sizeof(index)/4; i++)
+    for(int i=0; i<ad->length(); i++)
     {
-        temp = tree.find(index[i]);
-
-        while(temp)
-        {
-            cout << temp->value;
-
-            temp = dynamic_cast<BTreeNode<int>*>(temp->parent);
-        }
-        cout  << endl;
+        cout << (*ad)[i] << " ";
     }
 
     cout << endl;
 
-    for(tree.begin(); !tree.end(); tree.next())
-    {
-        cout << tree.current() << endl;
-    }
+    graph.setVertex(0, 100);
 
-    SharedPointer< Array<int> > array = tree.traversal(LevelOrder);
-    cout << endl;
-
-    for(int i=0; i<array->length(); i++)
-    {
-        cout << (*array)[i] << " ";
-    }
-
-    cout << endl;
-
-    SharedPointer< BTree<int> > tclone = tree.clone();
-    temp = tree.find(8);
-    tree.insert(12, temp);
-
-    for(int i=0; i<sizeof(index)/4; i++)
-    {
-        temp = tclone->find(index[i]);
-
-        while(temp)
-        {
-            cout << temp->value;
-
-            temp = dynamic_cast<BTreeNode<int>*>(temp->parent);
-        }
-        cout  << endl;
-    }
-
-    cout << endl;
-
-    cout << "tclone == tree:" << (tree == *tclone) << endl;
-
-    SharedPointer<BTree<int>> add_tree = tree.add(*tclone);
-
-    for(add_tree->begin(); !add_tree->end(); add_tree->next())
-    {
-        cout << add_tree->current() << endl;
-    }
-
-    BTreeNode<int>* head = tree.thread(LevelOrder);
-
-    while (head->right != NULL)
-    {
-        head = head->right;
-    }
-
-    while (head != NULL)
-    {
-        cout << head->value << " ";
-        head = head->left;
-    }
-
-    cout << endl;
+    cout << "vertex(0):" << graph.getVertex(0) << endl;
 
     return 0;
 }
@@ -216,5 +150,113 @@ int main()
         cout << l.front() << endl;
         l.remove();
     }
+ */
+
+/* BTree
+ * BTree<int> tree;
+
+    tree.insert(0, NULL);
+
+    TreeNode<int>* temp = tree.find(0);
+    tree.insert(1, temp);
+    tree.insert(2, temp);
+
+    temp = tree.find(1);
+    tree.insert(3, temp);
+    tree.insert(4, temp);
+
+    temp = tree.find(2);
+    tree.insert(5, temp);
+    tree.insert(6, temp);
+
+    temp = tree.find(6);
+    tree.insert(7, temp);
+    tree.insert(8, temp);
+
+    cout << "count:" << tree.count() << endl;
+    cout << "height:" << tree.height() << endl;
+    cout << "degree:" << tree.degree() << endl;
+
+    temp = tree.find(6);
+    tree.remove(temp);
+
+    cout << "count:" << tree.count() << endl;
+    cout << "height:" << tree.height() << endl;
+    cout << "degree:" << tree.degree() << endl;
+
+    int index[] = {3, 4, 5, 7, 8};
+
+    for(int i=0; i<sizeof(index)/4; i++)
+    {
+        temp = tree.find(index[i]);
+
+        while(temp)
+        {
+            cout << temp->value;
+
+            temp = dynamic_cast<BTreeNode<int>*>(temp->parent);
+        }
+        cout  << endl;
+    }
+
+    cout << endl;
+
+    for(tree.begin(); !tree.end(); tree.next())
+    {
+        cout << tree.current() << endl;
+    }
+
+    SharedPointer< Array<int> > array = tree.traversal(LevelOrder);
+    cout << endl;
+
+    for(int i=0; i<array->length(); i++)
+    {
+        cout << (*array)[i] << " ";
+    }
+
+    cout << endl;
+
+    SharedPointer< BTree<int> > tclone = tree.clone();
+    temp = tree.find(5);
+    tree.insert(12, temp);
+
+    for(int i=0; i<sizeof(index)/4; i++)
+    {
+        temp = tclone->find(index[i]);
+
+        while(temp)
+        {
+            cout << temp->value;
+
+            temp = dynamic_cast<BTreeNode<int>*>(temp->parent);
+        }
+        cout  << endl;
+    }
+
+    cout << endl;
+
+    cout << "tclone == tree:" << (tree == *tclone) << endl;
+
+    SharedPointer<BTree<int>> add_tree = tree.add(*tclone);
+
+    for(add_tree->begin(); !add_tree->end(); add_tree->next())
+    {
+        cout << add_tree->current() << endl;
+    }
+
+    BTreeNode<int>* head = tree.thread(LevelOrder);
+
+    while (head->right != NULL)
+    {
+        head = head->right;
+    }
+
+    while (head != NULL)
+    {
+        cout << head->value << " ";
+        head = head->left;
+    }
+
+    cout << endl;
  */
 

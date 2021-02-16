@@ -31,11 +31,13 @@ HEADERS += \
     DynamicList.h \
     GTree.h \
     GTreeNode.h \
+    Graph.h \
     LinkList.h \
     LinkQueue.h \
     LinkStack.h \
     LinuxList.h \
     List.h \
+    MatrixGraph.h \
     Pointer.h \
     Queue.h \
     SeqList.h \
