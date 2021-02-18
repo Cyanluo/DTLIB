@@ -37,6 +37,7 @@ HEADERS += \
     LinkStack.h \
     LinuxList.h \
     List.h \
+    ListGraph.h \
     MatrixGraph.h \
     Pointer.h \
     Queue.h \

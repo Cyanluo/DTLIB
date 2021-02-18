@@ -8,50 +8,58 @@
 #include "BTreeNode.h"
 #include "DynamicArray.h"
 #include "MatrixGraph.h"
+#include "ListGraph.h"
 
 using namespace std;
 using namespace DTLib;
 
 int main()
 {
-    MatrixGraph<3, int, int> graph;
+    ListGraph<char, int> graph;
 
-    graph.setEdge(0, 1, 1);
-    graph.setEdge(1, 0, 2);
-    graph.setEdge(1, 2, 3);
+    graph.addVertex('A');
+    graph.addVertex('B');
+    graph.addVertex('C');
+    graph.addVertex('D');
 
-    cout << "ID(1):" << graph.ID(1) << endl;
-    cout << "OD(1):" << graph.OD(1) << endl;
-    cout << "TD(1):" << graph.TD(1) << endl;
-    cout << "vCount:" << graph.vCount() << endl;
-    cout << "eCount:" << graph.eCount() << endl;
-
-    cout << "edget(1,2):" << graph.getEdge(1, 2) << endl;
-
-    graph.setEdge(0, 1, 30000);
-
-    cout << "edget(0,1):" << graph.getEdge(0, 1) << endl;
-
-    graph.removeEdge(0, 1);
-
-    cout << "ID(1):" << graph.ID(1) << endl;
-    cout << "OD(1):" << graph.OD(1) << endl;
-    cout << "TD(1):" << graph.TD(1) << endl;
-    cout << "vCount:" << graph.vCount() << endl;
-    cout << "eCount:" << graph.eCount() << endl;
-
-    SharedPointer< Array<int> > ad = graph.getAdjacent(1);
-
-    for(int i=0; i<ad->length(); i++)
+    for(int i=0; i<graph.vCount(); i++)
     {
-        cout << (*ad)[i] << " ";
+        cout << graph.getVertex(i) << " ";
     }
 
     cout << endl;
 
-    graph.setVertex(0, 100);
+    graph.setEdge(0, 1, 10);
+    graph.setEdge(0, 2, 8);
+    graph.setEdge(1, 0, 4);
+    graph.setEdge(1, 2, 3);
+    graph.setEdge(2, 3, 3);
 
-    cout << "vertex(0):" << graph.getVertex(0) << endl;
+    cout << "vCount: " << graph.vCount() << endl;
+    cout << "eCount: " << graph.eCount() << endl;
+    cout << "ID(1): " << graph.ID(1) << endl;
+    cout << "OD(1): " << graph.OD(1) << endl;
+    cout << "TD(1): " << graph.TD(1) << endl;
+
+    graph.removeEdge(1, 2);
+
+    cout << "eCount: " << graph.eCount() << endl;
+    cout << "ID(1): " << graph.ID(1) << endl;
+    cout << "OD(1): " << graph.OD(1) << endl;
+
+    SharedPointer< Array<int> > a = graph.getAdjacent(0);
+
+    for(int i=0; i<a->length(); i++)
+    {
+        cout << (*a)[i] << " ";
+    }
+
+    cout << endl;
+
+    graph.removeVertex();
+
+    cout << "vCount: " << graph.vCount() << endl;
+    cout << "eCount: " << graph.eCount() << endl;
 
     return 0;
 }
@@ -260,3 +268,44 @@ int main()
     cout << endl;
  */
 
+/* MatrixGraph
+ * MatrixGraph<3, int, int> graph;
+
+    graph.setEdge(0, 1, 1);
+    graph.setEdge(1, 0, 2);
+    graph.setEdge(1, 2, 3);
+
+    cout << "ID(1):" << graph.ID(1) << endl;
+    cout << "OD(1):" << graph.OD(1) << endl;
+    cout << "TD(1):" << graph.TD(1) << endl;
+    cout << "vCount:" << graph.vCount() << endl;
+    cout << "eCount:" << graph.eCount() << endl;
+
+    cout << "edget(1,2):" << graph.getEdge(1, 2) << endl;
+
+    graph.setEdge(0, 1, 30000);
+
+    cout << "edget(0,1):" << graph.getEdge(0, 1) << endl;
+
+    graph.removeEdge(0, 1);
+
+    cout << "ID(1):" << graph.ID(1) << endl;
+    cout << "OD(1):" << graph.OD(1) << endl;
+    cout << "TD(1):" << graph.TD(1) << endl;
+    cout << "vCount:" << graph.vCount() << endl;
+    cout << "eCount:" << graph.eCount() << endl;
+
+    SharedPointer< Array<int> > ad = graph.getAdjacent(1);
+
+    for(int i=0; i<ad->length(); i++)
+    {
+        cout << (*ad)[i] << " ";
+    }
+
+    cout << endl;
+
+    graph.setVertex(0, 100);
+
+    cout << "vertex(0):" << graph.getVertex(0) << endl;
+
+ */
