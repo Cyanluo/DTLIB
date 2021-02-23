@@ -191,6 +191,11 @@ public:
         return ret;
     }
 
+    bool isAdjacent(int i, int j)
+    {
+        return (0 <= i) && (i < vCount()) && (0 <= j) && (j < vCount()) && (m_list.get(i)->edge.find(Edge<E>(i, j)) >= 0);
+    }
+
     E getEdge(int i, int j)
     {
         E ret;

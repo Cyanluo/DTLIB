@@ -13,53 +13,75 @@
 using namespace std;
 using namespace DTLib;
 
+template < typename V, typename E >
+void DFS(Graph<V, E>& g, int i, Array<int>& isVisit)
+{
+    if(!isVisit[i])
+    {
+        cout << i << " ";
+
+        isVisit[i] = true;
+
+        SharedPointer< Array<int> > ad = g.getAdjacent(i);
+
+        for(int i=0; i<ad->length(); i++)
+        {
+            DFS(g, (*ad)[i], isVisit);
+        }
+    }
+}
+
+template < typename V, typename E >
+void DFS(Graph<V, E>& g, int i)
+{
+    if( (0 <= i) && (i < g.vCount()) )
+    {
+        DynamicArray<int> isVisit(g.vCount());
+
+        for(int i=0; i<isVisit.length(); i++)
+        {
+            isVisit[i] = false;
+        }
+
+        DFS(g, i, isVisit);
+    }
+    else
+    {
+        THROW_EXCEPTION(InvalidParameterException, "Invalid parameter i ...");
+    }
+}
+
 int main()
 {
-    ListGraph<char, int> graph;
+    ListGraph<int, int> graph(4);
 
-    graph.addVertex('A');
-    graph.addVertex('B');
-    graph.addVertex('C');
-    graph.addVertex('D');
+    graph.setEdge(0, 1, 1);
+    graph.setEdge(1, 0, 1);
 
-    for(int i=0; i<graph.vCount(); i++)
+    graph.setEdge(0, 2, 3);
+    graph.setEdge(2, 0, 3);
+
+    graph.setEdge(1, 2, 1);
+    graph.setEdge(2, 1, 1);
+
+    graph.setEdge(1, 3, 4);
+    graph.setEdge(3, 1, 4);
+
+    graph.setEdge(2, 3, 1);
+    graph.setEdge(3, 2, 1);
+
+    SharedPointer< Array< Edge<int> > > ge = graph.prim(0, false);
+
+    int w = 0;
+
+    for(int i=0; i<ge->length(); i++)
     {
-        cout << graph.getVertex(i) << " ";
+        w += (*ge)[i].data;
+
+        cout << (*ge)[i].b << " - " << (*ge)[i].e << ": " << (*ge)[i].data << endl;
     }
 
-    cout << endl;
-
-    graph.setEdge(0, 1, 10);
-    graph.setEdge(0, 2, 8);
-    graph.setEdge(1, 0, 4);
-    graph.setEdge(1, 2, 3);
-    graph.setEdge(2, 3, 3);
-
-    cout << "vCount: " << graph.vCount() << endl;
-    cout << "eCount: " << graph.eCount() << endl;
-    cout << "ID(1): " << graph.ID(1) << endl;
-    cout << "OD(1): " << graph.OD(1) << endl;
-    cout << "TD(1): " << graph.TD(1) << endl;
-
-    graph.removeEdge(1, 2);
-
-    cout << "eCount: " << graph.eCount() << endl;
-    cout << "ID(1): " << graph.ID(1) << endl;
-    cout << "OD(1): " << graph.OD(1) << endl;
-
-    SharedPointer< Array<int> > a = graph.getAdjacent(0);
-
-    for(int i=0; i<a->length(); i++)
-    {
-        cout << (*a)[i] << " ";
-    }
-
-    cout << endl;
-
-    graph.removeVertex();
-
-    cout << "vCount: " << graph.vCount() << endl;
-    cout << "eCount: " << graph.eCount() << endl;
+    cout << "total: " << w << endl;
 
     return 0;
 }
@@ -308,4 +330,80 @@ int main()
 
     cout << "vertex(0):" << graph.getVertex(0) << endl;
 
+ */
+
+/* ListGraph
+ * ListGraph<char, int> graph;
+
+    graph.addVertex('A');
+    graph.addVertex('B');
+    graph.addVertex('C');
+    graph.addVertex('D');
+
+    for(int i=0; i<graph.vCount(); i++)
+    {
+        cout << graph.getVertex(i) << " ";
+    }
+
+    cout << endl;
+
+    graph.setEdge(0, 1, 10);
+    graph.setEdge(0, 2, 8);
+    graph.setEdge(1, 0, 4);
+    graph.setEdge(1, 2, 3);
+    graph.setEdge(2, 3, 3);
+
+    cout << "vCount: " << graph.vCount() << endl;
+    cout << "eCount: " << graph.eCount() << endl;
+    cout << "ID(1): " << graph.ID(1) << endl;
+    cout << "OD(1): " << graph.OD(1) << endl;
+    cout << "TD(1): " << graph.TD(1) << endl;
+
+    cout << "BFS: ";
+
+    SharedPointer< Array<int> > bfs = graph.BFS(0);
+
+    for(int i=0; i<bfs->length(); i++)
+    {
+        cout << (*bfs)[i] << " ";
+    }
+
+    cout << endl;
+
+    cout << "DFS: ";
+
+    SharedPointer< Array<int> > dfs = graph.DFS(0);
+
+    for(int i=0; i<dfs->length(); i++)
+    {
+        cout << (*dfs)[i] << " ";
+    }
+
+    cout << endl;
+
+    cout << "DFS(recursive): ";
+
+    DFS(graph, 0);
+
+    cout << endl;
+
+    graph.removeEdge(1, 2);
+
+    cout << "eCount: " << graph.eCount() << endl;
+    cout << "ID(1): " << graph.ID(1) << endl;
+    cout << "OD(1): " << graph.OD(1) << endl;
+
+    SharedPointer< Array<int> > a = graph.getAdjacent(0);
+
+    for(int i=0; i<a->length(); i++)
+    {
+        cout << (*a)[i] << " ";
+    }
+
+    cout << endl;
+
+    graph.removeVertex();
+
+    cout << "vCount: " << graph.vCount() << endl;
+    cout << "eCount: " << graph.eCount() << endl;
  */
