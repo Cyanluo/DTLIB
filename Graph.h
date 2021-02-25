@@ -7,6 +7,7 @@
 #include "Exception.h"
 #include "LinkQueue.h"
 #include "LinkStack.h"
+#include "Sort.h"
 
 namespace DTLib
 {
@@ -31,14 +32,24 @@ struct Edge: public Object
         data = value;
     }
 
-    bool operator == (const Edge& obj)
+    bool operator == (const Edge<E>& obj)
     {
         return (obj.b == this->b) && (obj.e == this->e);
     }
 
-    bool operator != (const Edge& obj)
+    bool operator != (const Edge<E>& obj)
     {
         return !(*this == obj);
+    }
+
+    bool operator > (const Edge<E>& obj)
+    {
+        return (data > obj.data);
+    }
+
+    bool operator < (const Edge<E>& obj)
+    {
+        return (data < obj.data);
     }
 };
 
@@ -64,6 +75,16 @@ protected:
         }
 
         return ret;
+    }
+
+    int find(Array<int>& array, int v)
+    {
+        while(array[v] != -1)
+        {
+            v = array[v];
+        }
+
+        return v;
     }
 public:
     virtual V getVertex(int i) = 0;
@@ -103,6 +124,62 @@ public:
         return ret;
     }
 
+    SharedPointer< Array< Edge<E> > > kruskal(const bool MINIUM=true)
+    {
+        LinkQueue< Edge<E> > ret;
+
+        if(asUndirected())
+        {
+            DynamicArray<int> p(vCount());
+            LinkQueue< Edge<E> > q_edges;
+
+            for(int i=0; i<p.length(); i++)
+            {
+                p[i] = -1;
+            }
+
+            for(int i=0; i<vCount(); i++)
+            {
+                for(int j=0; j<vCount(); j++)
+                {
+                    if(isAdjacent(i, j))
+                    {
+                        q_edges.add(Edge<E>(i, j, getEdge(i, j)));
+                    }
+                }
+            }
+
+            SharedPointer< Array< Edge<E> > > a_edges = toArray(q_edges);
+
+            Sort::Shell(*a_edges, !MINIUM);
+
+            for(int i=0; (i<(*a_edges).length()) && (ret.length() < (vCount() - 1)); i++)
+            {
+                int b = find(p, (*a_edges)[i].b);
+                int e = find(p, (*a_edges)[i].e);
+
+                if(b != e)
+                {
+                    p[b] = e;
+
+                    ret.add((*a_edges)[i]);
+                }
+            }
+        }
+        else
+        {
+            THROW_EXCEPTION(InvalidOperationException, "kruskal only use in undirected graph ...");
+        }
+
+        if( ret.length() != (vCount() - 1) )
+        {
+            THROW_EXCEPTION(InvalidOperationException, "No enough edges for kruskal operation ...");
+        }
+
+        return toArray(ret);
+    }
+
+
     SharedPointer< Array< Edge<E> > > prim(const E& LIMIT, const bool MINIUM=true)
     {
         LinkQueue< Edge<E> > ret;
@@ -139,15 +216,15 @@ public:
 
                 for(int i=0; i<vCount() && !end; i++)
                 {
-                    E k = LIMIT;
                     v = -1;
+                    E k = LIMIT;
 
-                    for(int j=0; j<aj->length(); j++)
+                    for(int j=0; j<vCount(); j++)
                     {
-                        if( !mark[ (*aj)[j] ] && (MINIUM ? cost[ (*aj)[j] ] < k : cost[ (*aj)[j] ] > k) )
+                        if( !mark[j] && (MINIUM ? cost[j] < k : cost[j] > k) )
                         {
                             k = cost[j];
-                            v = (*aj)[j];
+                            v = j;
                         }
                     }
 

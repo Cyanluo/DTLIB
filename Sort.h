@@ -136,7 +136,7 @@ public:
     }
 
     template < typename T >
-    static void Select(Array<T>& array, int len, bool min2max=false)
+    static void Select(Array<T>& array, bool min2max=false)
     {
         Select(array.array(), array.length(), min2max);
     }
@@ -160,7 +160,7 @@ public:
     }
 
     template < typename T >
-    static void Insert(Array<T>& array, int len, bool min2max=false)
+    static void Insert(Array<T>& array, bool min2max=false)
     {
         Insert(array.array(), array.length(), min2max);
     }
@@ -187,7 +187,7 @@ public:
     }
 
     template < typename T >
-    static void Bubble(Array<T>& array, int len, bool min2max=false)
+    static void Bubble(Array<T>& array, bool min2max=false)
     {
         Bubble(array.array(), array.length(), min2max);
     }
@@ -220,7 +220,7 @@ public:
     }
 
     template < typename T >
-    static void Shell(Array<T>& array, int len, bool min2max=false)
+    static void Shell(Array<T>& array, bool min2max=false)
     {
         Shell(array.array(), array.length(), min2max);
     }
@@ -239,7 +239,7 @@ public:
     }
 
     template < typename T >
-    static void Merge(Array<T>& array, int len, bool min2max=false)
+    static void Merge(Array<T>& array, bool min2max=false)
     {
         Merge(array.array(), array.length(), min2max);
     }
@@ -251,7 +251,7 @@ public:
     }
 
     template < typename T >
-    static void Quick(Array<T>& array, int len, bool min2max=false)
+    static void Quick(Array<T>& array, bool min2max=false)
     {
         Quick(array.array(), array.length(), min2max);
     }

@@ -51,9 +51,63 @@ void DFS(Graph<V, E>& g, int i)
     }
 }
 
-int main()
+template < typename V, typename E >
+Graph<V, E>& GraphComplex()
 {
-    ListGraph<int, int> graph(4);
+    static ListGraph<V, E> graph(9);
+
+    graph.setEdge(0, 1, 10);
+    graph.setEdge(1, 0, 10);
+
+    graph.setEdge(0, 5, 11);
+    graph.setEdge(5, 0, 11);
+
+    graph.setEdge(1, 2, 18);
+    graph.setEdge(2, 1, 18);
+
+    graph.setEdge(1, 8, 12);
+    graph.setEdge(8, 1, 12);
+
+    graph.setEdge(1, 6, 16);
+    graph.setEdge(6, 1, 16);
+
+    graph.setEdge(2, 3, 22);
+    graph.setEdge(3, 2, 22);
+
+    graph.setEdge(2, 8, 8);
+    graph.setEdge(8, 2, 8);
+
+    graph.setEdge(3, 8, 21);
+    graph.setEdge(8, 3, 21);
+
+    graph.setEdge(3, 6, 24);
+    graph.setEdge(6, 3, 24);
+
+    graph.setEdge(3, 7, 16);
+    graph.setEdge(7, 3, 16);
+
+    graph.setEdge(3, 4, 20);
+    graph.setEdge(4, 3, 20);
+
+    graph.setEdge(4, 7, 7);
+    graph.setEdge(7, 4, 7);
+
+    graph.setEdge(4, 5, 26);
+    graph.setEdge(5, 4, 26);
+
+    graph.setEdge(5, 6, 17);
+    graph.setEdge(6, 5, 17);
+
+    graph.setEdge(6, 7, 19);
+    graph.setEdge(7, 6, 19);
+
+    return graph;
+}
+
+template < typename V, typename E >
+Graph<V, E>& GraphSimple()
+{
+    static ListGraph<V, E> graph(4);
 
     graph.setEdge(0, 1, 1);
     graph.setEdge(1, 0, 1);
@@ -70,7 +124,18 @@ int main()
     graph.setEdge(2, 3, 1);
     graph.setEdge(3, 2, 1);
 
+    return graph;
+}
+
+int main()
+{
+    Graph<int, int>& graph = GraphComplex<int, int>();
+
+    //SharedPointer< Array< Edge<int> > > ge = graph.prim(65536);
+
     SharedPointer< Array< Edge<int> > > ge = graph.prim(0, false);
+
+    //SharedPointer< Array< Edge<int> > > ge = graph.kruskal();
 
     int w = 0;
 
